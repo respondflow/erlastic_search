@@ -7,7 +7,7 @@
 %%% Created : 29 Mar 2016 by Brujo Benavides <>
 %%%-------------------------------------------------------------------
 -module(erls_config).
--export([get_host/0, get_port/0]).
+-export([get_host/0, get_port/0, get_auth/0]).
 
 %%--------------------------------------------------------------------
 %% @doc
@@ -37,3 +37,18 @@ get_port() ->
         {ok, Port}->
             Port
     end.
+
+%%--------------------------------------------------------------------
+%% @doc
+%% Retrieves the authorization token
+%% If nothing is defined in the app env for the key 'port', it's undefined.
+%% @end
+%%--------------------------------------------------------------------
+get_auth() ->
+    case application:get_env(erlastic_search, auth) of
+        undefined ->
+            undefined;
+        {ok, AuthToken} ->
+            AuthToken
+    end.
+

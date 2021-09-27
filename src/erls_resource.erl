@@ -49,7 +49,18 @@ request(State, Method, Path, Headers, Params, Body, Options) ->
               end)/binary>>,
     {Headers2, Options1, Body} = make_body(Body, Headers, Options),
     Headers3 = default_header(<<"Content-Type">>, <<"application/json">>, Headers2),
-    do_request(State, Method, Path1, Headers3, Body, Options1).
+    Headers4 = case State#erls_params.auth of
+        undefined -> Headers3;
+        Auth -> default_header(
+            <<"Authorization">>,
+            unicode:characters_to_binary(
+                [<<"Basic ">>, Auth],
+                utf8
+            ),
+            Headers3
+        )
+    end,
+    do_request(State, Method, Path1, Headers4, Body, Options1).
 
 do_request(#erls_params{host=Host, port=Port, timeout=Timeout, ctimeout=CTimeout},
            Method, Path, Headers, Body, Options) ->

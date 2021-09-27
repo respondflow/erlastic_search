@@ -10,9 +10,12 @@
           port        = erls_config:get_port() :: integer(),
 
           % These are passed verbatim to the underlying http client in use.
-          http_client_options = []:: [term()], 
+          http_client_options = []:: [term()],
 
           % Keeping the following two options for backwards compatibility.
           timeout     = infinity :: integer() | infinity,
-          ctimeout    = infinity :: integer() | infinity
+          ctimeout    = infinity :: integer() | infinity,
+
+          % Basic auth token
+          auth        = erls_config:get_auth() :: binary()
          }).
